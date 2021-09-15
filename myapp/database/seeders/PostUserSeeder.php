@@ -23,7 +23,9 @@ class PostUserSeeder extends Seeder
         ];
         $user = User::factory()->create($params);
 
-        $post = Post::factory()->create();
-        $user->posts()->syncWithoutDetaching($post->id);
+        for($i = 0; $i < 10; $i++){
+            $post = Post::factory()->create();
+            $user->posts()->syncWithoutDetaching($post->id);
+        }
     }
 }
