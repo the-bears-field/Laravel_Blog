@@ -16,6 +16,14 @@ class PostUserSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $params = [
+            'name' => 'test',
+            'email' => 'test@example.com',
+            'password' => Hash::make('123456')
+        ];
+        $user = User::factory()->create($params);
+
+        $post = Post::factory()->create();
+        $user->posts()->syncWithoutDetaching($post->id);
     }
 }
