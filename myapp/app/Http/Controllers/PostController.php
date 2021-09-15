@@ -17,6 +17,6 @@ class PostController extends Controller
     {
         $postId = $request->postId;
         $post = Post::find($postId);
-        return view('post.show', ['post' => $post]);
+        return $post ? view('post.show', ['post' => $post]) : redirect('/');
     }
 }
