@@ -9,7 +9,7 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $posts = Post::all();
+        $posts = Post::all()->sortByDesc('id');
         return view('post.index', ['posts' => $posts]);
     }
 
