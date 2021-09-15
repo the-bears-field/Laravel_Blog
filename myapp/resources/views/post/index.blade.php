@@ -5,7 +5,7 @@
 @else
     @foreach($posts as $post)
         <div>
-            <p>{{ $post->title }}</p>
+            <p><a href="{{ route('post.show', ['postId' => $post->id]) }}">{{ $post->title }}</a></p>
             <p>{{ $post->post }}</p>
         </div>
     @endforeach
