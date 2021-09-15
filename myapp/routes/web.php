@@ -15,4 +15,6 @@ use App\Http\Controllers\PostController;
 */
 
 Route::get('/', [PostController::class, 'index']);
+Route::get('/new', [PostController::class, 'new']);
+Route::post('/new', [PostController::class, 'create']);
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');
