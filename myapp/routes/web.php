@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -20,6 +21,7 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/', [PostController::class, 'index']);
-Route::get('/new', [PostController::class, 'new']);
-Route::post('/new', [PostController::class, 'create']);
+Route::get('/new', [PostController::class, 'new'])->middleware('auth');
+Route::post('/new', [PostController::class, 'create'])->middleware('auth');
+Route::get('/user', [UserController::class, 'index'])->middleware('auth');
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');
