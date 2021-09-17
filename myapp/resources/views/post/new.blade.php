@@ -1,5 +1,6 @@
 <form adtion="/new" method="POST">
-    <input type="text" name="title">
+    @csrf
+    <div><input type="text" name="title"></div>
     <textarea name="post"></textarea>
-    <input type="submit" value="投稿">
+    <div><input type="submit" value="投稿"></div>
 </form>
