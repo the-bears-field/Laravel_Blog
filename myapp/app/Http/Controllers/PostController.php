@@ -36,4 +36,34 @@ class PostController extends Controller
         $user->posts()->syncWithoutDetaching($post->id);
         return redirect('/');
     }
+
+    public function edit(Request $request)
+    {
+        $postId = $request->postId;
+        $userId = Auth::id();
+        $post = Post::with('users')->find($postId);
+        $user = $post->users->find($userId);
+        $params = [
+            'title' => $post->title,
+            'post' => $post->post
+        ];
+
+        return $user ? view('post.edit', $params) : redirect('/');
+    }
+
+    public function update(Request $request)
+    {
+        $postId = $request->postId;
+        $userId = Auth::id();
+        $post = Post::with('users')->find($postId);
+        $user = $post->users->find($userId);
+        $params = [
+            'title' => $request->title,
+            'post' => $request->post
+        ];
+
+        if($user) Post::find($postId)->update($params);
+
+        return redirect('/');
+    }
 }
