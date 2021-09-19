@@ -42,6 +42,7 @@ class PostController extends Controller
         $postId = $request->postId;
         $userId = Auth::id();
         $post = Post::with('users')->find($postId);
+        if(!$post) return redirect('/');
         $user = $post->users->find($userId);
         $params = [
             'title' => $post->title,
@@ -56,6 +57,7 @@ class PostController extends Controller
         $postId = $request->postId;
         $userId = Auth::id();
         $post = Post::with('users')->find($postId);
+        if(!$post) return redirect('/');
         $user = $post->users->find($userId);
         $params = [
             'title' => $request->title,
@@ -72,6 +74,7 @@ class PostController extends Controller
         $postId = $request->postId;
         $userId = Auth::id();
         $post = Post::with('users')->find($postId);
+        if(!$post) return redirect('/');
         $user = $post->users->find($userId);
         $params = [
             'title' => $post->title,
@@ -86,6 +89,7 @@ class PostController extends Controller
         $postId = $request->postId;
         $userId = Auth::id();
         $post = Post::with('users')->find($postId);
+        if(!$post) return redirect('/');
         $user = $post->users->find($userId);
 
         if($user){

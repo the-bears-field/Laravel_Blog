@@ -21,11 +21,15 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/', [PostController::class, 'index']);
-Route::get('/new', [PostController::class, 'new'])->middleware('auth');
-Route::post('/new', [PostController::class, 'create'])->middleware('auth');
-Route::get('/edit/{postId}', [PostController::class, 'edit'])->middleware('auth');
-Route::post('/edit/{postId}', [PostController::class, 'update'])->middleware('auth');
-Route::get('/delete/{postId}', [PostController::class, 'delete'])->middleware('auth');
-Route::post('/delete/{postId}', [PostController::class, 'destroy'])->middleware('auth');
-Route::get('/user', [UserController::class, 'index'])->middleware('auth');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/new', [PostController::class, 'new']);
+    Route::post('/new', [PostController::class, 'create']);
+    Route::get('/edit/{postId}', [PostController::class, 'edit']);
+    Route::post('/edit/{postId}', [PostController::class, 'update']);
+    Route::get('/delete/{postId}', [PostController::class, 'delete']);
+    Route::post('/delete/{postId}', [PostController::class, 'destroy']);
+    Route::get('/user', [UserController::class, 'index']);
+});
+
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');
