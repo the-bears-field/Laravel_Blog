@@ -25,5 +25,7 @@ Route::get('/new', [PostController::class, 'new'])->middleware('auth');
 Route::post('/new', [PostController::class, 'create'])->middleware('auth');
 Route::get('/edit/{postId}', [PostController::class, 'edit'])->middleware('auth');
 Route::post('/edit/{postId}', [PostController::class, 'update'])->middleware('auth');
+Route::get('/delete/{postId}', [PostController::class, 'delete'])->middleware('auth');
+Route::post('/delete/{postId}', [PostController::class, 'destroy'])->middleware('auth');
 Route::get('/user', [UserController::class, 'index'])->middleware('auth');
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');

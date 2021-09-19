@@ -66,4 +66,33 @@ class PostController extends Controller
 
         return redirect('/');
     }
+
+    public function delete(Request $request)
+    {
+        $postId = $request->postId;
+        $userId = Auth::id();
+        $post = Post::with('users')->find($postId);
+        $user = $post->users->find($userId);
+        $params = [
+            'title' => $post->title,
+            'post' => $post->post
+        ];
+
+        return $user ? view('post.delete', $params) : redirect('/');
+    }
+
+    public function destroy(Request $request)
+    {
+        $postId = $request->postId;
+        $userId = Auth::id();
+        $post = Post::with('users')->find($postId);
+        $user = $post->users->find($userId);
+
+        if($user){
+            $user->posts()->detach($postId);
+            Post::find($postId)->delete();
+        }
+
+        return redirect('/');
+    }
 }
