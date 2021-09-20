@@ -10,6 +10,7 @@ class Tag extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
     /**
      * The posts that belong to the User
      *
