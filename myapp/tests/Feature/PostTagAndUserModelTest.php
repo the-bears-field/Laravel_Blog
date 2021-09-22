@@ -16,7 +16,7 @@ class PostTagAndUserModelTest extends TestCase
 
     private $user;
     private $post;
-    private $tag;
+    private $tags;
 
     protected function setUp(): void
     {
@@ -35,13 +35,13 @@ class PostTagAndUserModelTest extends TestCase
             'post' => 'test'
         ]);
 
-        $this->tag = Tag::factory()->create([
-            'id' => 1,
-            'name' => 'test'
-        ]);
+        $this->tags = Tag::factory()->count(10)->create();
 
         $this->user->posts()->syncWithoutDetaching($this->post->id);
-        $this->post->tags()->syncWithoutDetaching($this->tag->id);
+
+        foreach($this->tags as $tag){
+            $this->post->tags()->syncWithoutDetaching($tag->id);
+        }
     }
 
     /**
@@ -71,9 +71,11 @@ class PostTagAndUserModelTest extends TestCase
     public function testTagRegistration()
     {
         # tagsテーブルに上記データが挿入できているか判定
-        $this->assertDatabaseHas('tags', [
-            'name' => 'test'
-        ]);
+        foreach($this->tags as $tag){
+            $this->assertDatabaseHas('tags', [
+                'name' => $tag->name
+            ]);
+        }
     }
 
     public function testLinkedPostUserTable()
@@ -90,12 +92,13 @@ class PostTagAndUserModelTest extends TestCase
     public function testLinkedPostTagTable()
     {
         $post = $this->post;
-        $tag = $this->tag;
         # 中間テーブルにレコードが存在するかを判定
-        $this->assertDatabaseHas('post_tag', [
-            'post_id' => $post->id,
-            'tag_id' => $tag->id
-        ]);
+        foreach($this->tags as $tag){
+            $this->assertDatabaseHas('post_tag', [
+                'post_id' => $post->id,
+                'tag_id' => $tag->id
+            ]);
+        }
     }
 
     public function testGetPostModelInstanceFromUserModel()
@@ -121,34 +124,66 @@ class PostTagAndUserModelTest extends TestCase
         $this->assertEquals($user->password, 'test');
     }
 
+    public function testGetTagModelInstanceFromPostModel()
+    {
+        # Postモデルからタグ情報を取得できているかを判定
+        $post = $this->post;
+        $postId = $post->id;
+        foreach($this->tags as $tag){
+            $tagId = $tag->id;
+            $tagModelInstance = $post->with('tags')->find($postId)->tags->find($tagId);
+            $this->assertEquals($tagModelInstance->name, $tag->name);
+        }
+    }
+
     public function testUnlinkPostTagAndDeleteTag()
     {
         $post = $this->post;
         $postId = $post->id;
-        $tagId = $this->tag->id;
-        $post->tags()->detach($tagId);
-        # 中間テーブルとの紐付けを解除して、中間テーブルのレコードが削除されているか判定。
-        $this->assertDatabaseMissing('post_tag', [
-            'post_id' => $postId,
-            'tag_id' => $tagId
-        ]);
+        foreach($this->tags as $tag){
+            $tagId = $tag->id;
+            $post->tags()->detach($tagId);
+            # 中間テーブルとの紐付けを解除して、中間テーブルのレコードが削除されているか判定。
+            $this->assertDatabaseMissing('post_tag', [
+                'post_id' => $postId,
+                'tag_id' => $tagId
+            ]);
+        }
     }
 
     public function testDeletePostUnlinkedTagAndUser()
     {
         $user = $this->user;
         $post = $this->post;
-        $tag  = $this->tag;
         $postId = $post->id;
         $userId = $user->id;
-        $tagId = $tag->id;
 
-        $post->tags()->detach($tagId);
-        # 中間テーブルとの紐付けを解除して、中間テーブルのレコードが削除されているか判定。
-        $this->assertDatabaseMissing('post_tag', [
-            'post_id' => $postId,
-            'tag_id' => $tagId
-        ]);
+        foreach($this->tags as $tag){
+            $tagId = $tag->id;
+            $post->tags()->detach($tagId);
+            # 中間テーブルとの紐付けを解除して、中間テーブルのレコードが削除されているか判定。
+            $this->assertDatabaseMissing('post_tag', [
+                'post_id' => $postId,
+                'tag_id' => $tagId
+            ]);
+            $postTagRecords = DB::table('post_tag')->where('tag_id', $tagId)->get();
+
+            # tagsテーブルのレコード削除前に削除対象が存在しているか判定
+            $this->assertDatabaseHas('tags', [
+                'id' => $tagId,
+                'name' => $tag->name
+            ]);
+
+            if($postTagRecords->isEmpty()){
+                Tag::find($tagId)->delete();
+
+                # tagsテーブルのレコード削除後に削除対象が存在しているか判定
+                $this->assertDatabaseMissing('tags', [
+                    'id' => $tagId,
+                    'name' => $tag->name
+                ]);
+            }
+        }
 
         # 中間テーブルとの紐付けを解除して、中間テーブルのレコードが削除されているか判定。
         $user->posts()->detach($postId);
@@ -163,5 +198,46 @@ class PostTagAndUserModelTest extends TestCase
             'title' => 'test',
             'post' => 'test'
         ]);
+    }
+
+    public function testPivot()
+    {
+        $user = $this->user;
+        $post = $this->post;
+        $tags = $this->tags;
+
+        /**
+         * Postインスタンスのpovitプロパティからuser_idを抽出し、
+         * Userインスタンスのidプロパティと同一かを判定。
+         */
+        foreach($user->posts as $post){
+            $this->assertEquals($post->pivot->user_id, $user->id);
+        }
+
+        /**
+         * Userインスタンスのpovitプロパティからpost_idを抽出し、
+         * Postインスタンスのidプロパティと同一かを判定。
+         */
+        foreach($post->users as $user){
+            $this->assertEquals($user->pivot->post_id, $post->id);
+        }
+
+        /**
+         * Tagインスタンスのpovitプロパティからpost_idを抽出し、
+         * Postインスタンスのidプロパティと同一かを判定。
+         */
+        foreach($post->tags as $tag){
+            $this->assertEquals($tag->pivot->post_id, $post->id);
+        }
+
+        /**
+         * Postインスタンスのpovitプロパティからtag_idを抽出し、
+         * Tagインスタンスのidプロパティと同一かを判定。
+         */
+        foreach($tags as $tag){
+            foreach($tag->posts as $post){
+                $this->assertEquals($post->pivot->tag_id, $tag->id);
+            }
+        }
     }
 }

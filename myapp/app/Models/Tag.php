@@ -18,6 +18,6 @@ class Tag extends Model
      */
     public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Post::class, 'post_user');
+        return $this->belongsToMany(Post::class, 'post_tag');
     }
 }
