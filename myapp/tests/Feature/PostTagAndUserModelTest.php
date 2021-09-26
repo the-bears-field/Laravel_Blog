@@ -148,6 +148,20 @@ class PostTagAndUserModelTest extends TestCase
                 'post_id' => $postId,
                 'tag_id' => $tagId
             ]);
+
+            $isTagAssociatedPost = DB::table('post_tag')
+                                    ->where('tag_id', $tagId)
+                                    ->pluck('tag_id')
+                                    ->isNotEmpty();
+            # 中間テーブルからデータが取得できなかったか判定。
+            $this->assertFalse($isTagAssociatedPost);
+
+            $isTagAssociatedPost ?: $tag->delete();
+
+            # tagsテーブルからレコードが削除されているか判定。
+            $this->assertDatabaseMissing('tags', [
+                'id' => $tagId
+            ]);
         }
     }
 
