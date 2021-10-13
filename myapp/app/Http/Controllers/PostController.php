@@ -1,17 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Services\PostService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function index(Request $request)
+    private PostService $postService;
+
+    public function __construct(PostService $postService)
     {
-        $posts = Post::all()->sortByDesc('id');
-        return view('post.index', ['posts' => $posts]);
+        $this->postService = $postService;
+    }
+
+    public function index(Request $request): View
+    {
+        $posts = $this->postService->getAll();
+        return view('post.index', compact('posts'));
     }
 
     public function show(Request $request)
