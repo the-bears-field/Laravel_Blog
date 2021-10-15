@@ -55,4 +55,11 @@ class PostServiceTest extends TestCase
         $post = $postService->getAll();
         $this->assertTrue($post->isNotEmpty());
     }
+
+    public function test_getPostメソッドでPostインスタンスが取得可能()
+    {
+        $postService = App::make(PostService::class);
+        $post = $postService->getPost(1);
+        $this->assertEquals($post::class, Post::class);
+    }
 }

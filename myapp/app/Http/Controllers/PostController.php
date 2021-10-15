@@ -26,9 +26,9 @@ class PostController extends Controller
 
     public function show(Request $request)
     {
-        $postId = $request->postId;
-        $post = Post::find($postId);
-        return $post ? view('post.show', ['post' => $post]) : redirect('/');
+        $postId = intval($request->postId);
+        $post = $this->postService->getPost($postId);
+        return $post ? view('post.show', compact('post')) : redirect('/');
     }
 
     public function new(Request $request)

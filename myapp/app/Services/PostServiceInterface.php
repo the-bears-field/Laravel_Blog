@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Collection;
 interface PostServiceInterface
 {
     public function getAll(): Collection;
+    public function getPost(int $postId);
 }
