@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Requests;
 
@@ -13,7 +14,7 @@ class PostRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +22,19 @@ class PostRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'title' => 'required',
+            'post'  => 'required',
+        ];
+    }
+
+    public function message(): array
+    {
+        return [
+            'title.required' => '入力必須です。',
+            'post.required'  => '入力必須です。',
         ];
     }
 }
