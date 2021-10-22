@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\DatabaseQueryServiceProvider::class,
         App\Providers\PostServiceProvider::class,
+        App\Providers\TagServiceProvider::class,
+        App\Providers\UserServiceProvider::class,
     ],
 
     /*
