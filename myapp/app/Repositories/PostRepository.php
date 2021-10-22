@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -18,5 +19,11 @@ class PostRepository implements PostRepositoryInterface
     {
         $post = Post::with('users')->with('tags')->find($postId);
         return $post;
+    }
+
+    public function createPost(PostRequest $request): Post
+    {
+        $params = $request->only(['title', 'post']);
+        return Post::create($params);
     }
 }
