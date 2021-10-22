@@ -5,6 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\PostRepository;
 use App\Repositories\PostRepositoryInterface;
+use App\Repositories\TagRepository;
+use App\Repositories\TagRepositoryInterface;
+use App\Repositories\UserRepository;
+use App\Repositories\UserRepositoryInterface;
 use App\Services\PostService;
 use App\Services\PostServiceInterface;
 
@@ -23,7 +27,11 @@ class PostServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(PostServiceInterface::class, function ($app): PostService {
-                return new PostService($app->make(PostRepositoryInterface::class));
+                return new PostService(
+                    $app->make(PostRepositoryInterface::class),
+                    $app->make(TagRepositoryInterface::class),
+                    $app->make(UserRepositoryInterface::class)
+                );
             }
         );
     }
