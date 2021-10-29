@@ -39,6 +39,7 @@ class PostController extends Controller
 
     public function create(PostRequest $request)
     {
+        $this->authorize('create', Post::class);
         $this->postService->createPost($request);
         return redirect('/');
     }
