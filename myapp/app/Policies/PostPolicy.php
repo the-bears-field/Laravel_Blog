@@ -40,9 +40,9 @@ class PostPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user, Post $post)
+    public function create(User $user, Post $post): boolean
     {
-        //
+        return $user->id === $post->user->id;
     }
 
     /**
