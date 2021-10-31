@@ -11,7 +11,7 @@ class PostRepository implements PostRepositoryInterface
 {
     public function getAll(): Collection
     {
-        $posts = Post::with('users')->with('tags')->latest()->get();
+        $posts = Post::with('users')->with('tags')->latest('id')->get();
         return $posts;
     }
 
