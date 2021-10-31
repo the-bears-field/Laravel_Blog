@@ -53,6 +53,10 @@ class PostService implements PostServiceInterface
         $user = Auth::user();
         $user->posts()->syncWithoutDetaching(intval($post->id));
 
+        if(!$request->tags){
+            return;
+        }
+
         $sentTagNames      = $this->stringToArray($request->tags);
         $availableTagNames = $this->tagRepository->getAvailableTagNames();
 
