@@ -36,6 +36,17 @@ class PostService implements PostServiceInterface
         return $this->postRepository->getPost($postId);
     }
 
+    public function getPostForForm(int $postId)
+    {
+        $post = $this->postRepository->getPost($postId);
+
+        if(isset($post->tags)){
+            $post->tags = implode(' ', $post->tags->pluck('name')->toArray());
+        }
+
+        return $post;
+    }
+
     public function createPost($request): void
     {
         $post = $this->postRepository->createPost($request);

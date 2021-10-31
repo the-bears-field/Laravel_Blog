@@ -9,4 +9,6 @@ interface PostServiceInterface
 {
     public function getAll(): Collection;
     public function getPost(int $postId);
+    public function getPostForForm(int $postId);
+    public function createPost($request): void;
 }
