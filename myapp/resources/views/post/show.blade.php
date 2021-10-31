@@ -6,7 +6,7 @@
     @endif
     <ul>
     @foreach($post->tags as $tag)
-        <li>{{ $tag }}</li>
+        <li>{{ $tag->name }}</li>
     @endforeach
     </ul>
     <p>{{ $post->post }}</p>
