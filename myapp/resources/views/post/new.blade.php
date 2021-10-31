@@ -1,4 +1,4 @@
-<form adtion="/new" method="POST">
+<form action="/new" method="POST">
     @csrf
     <div><input type="text" name="title"></div>
     <textarea name="post"></textarea>
