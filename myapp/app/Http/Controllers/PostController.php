@@ -44,19 +44,11 @@ class PostController extends Controller
         return redirect('/');
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request): View
     {
-        $postId = $request->postId;
-        $userId = Auth::id();
-        $post = Post::with('users')->find($postId);
-        if(!$post) return redirect('/');
-        $user = $post->users->find($userId);
-        $params = [
-            'title' => $post->title,
-            'post' => $post->post
-        ];
-
-        return $user ? view('post.edit', $params) : redirect('/');
+        $post = $this->postService->getPostForForm(intval($request->postId));
+        $this->authorize('update', $post);
+        return view('post.edit', compact('post'));
     }
 
     public function update(PostRequest $request)
