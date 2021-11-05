@@ -26,4 +26,10 @@ class PostRepository implements PostRepositoryInterface
         $params = $request->only(['title', 'post']);
         return Post::create($params);
     }
+
+    public function updatePost(PostRequest $request): void
+    {
+        $params = $request->only(['title', 'post']);
+        Post::where('id', intval($request->postId))->update($params);
+    }
 }

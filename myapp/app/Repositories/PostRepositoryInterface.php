@@ -12,4 +12,5 @@ interface PostRepositoryInterface
     public function getAll(): Collection;
     public function getPost(int $postId);
     public function createPost(PostRequest $request): Post;
+    public function updatePost(PostRequest $request): void;
 }
