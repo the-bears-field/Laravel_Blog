@@ -7,14 +7,15 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\PostServiceInterface;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
 class PostServiceTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     private $user;
     private $post;
@@ -37,14 +38,16 @@ class PostServiceTest extends TestCase
             'post' => 'test'
         ]);
 
-        $this->tags = Tag::factory()->count(10)->create();
-
         $this->user->posts()->syncWithoutDetaching($this->post->id);
 
-        foreach($this->tags as $tag){
-            $this->post->tags()->syncWithoutDetaching($tag->id);
-        }
+        $this->tags = Tag::factory()
+                        ->count(10)
+                        ->create()
+                        ->each(function($tag){
+                            $tag->posts()->syncWithoutDetaching($this->post->id);
+                        });
     }
+
     /**
      * A basic feature test example.
      *
@@ -91,5 +94,73 @@ class PostServiceTest extends TestCase
                 'name' => $tagName
             ]);
         }
+    }
+
+    public function test_updatePostメソッドが正常に作動する()
+    {
+        $this->actingAs($this->user);
+
+        $request = new PostRequest;
+        $params  = [
+            'postId' => '1',
+            'title'  => 'example',
+            'post'   => 'example',
+            'tags'   => 'test',
+        ];
+        $request->merge($params);
+
+        $postService = App::make(PostServiceInterface::class);
+        $postService->updatePost($request);
+
+        $this->assertDatabaseHas('posts', [
+            'id'    => 1,
+            'title' => 'example',
+            'post'  => 'example'
+        ]);
+
+        $this->assertDatabaseHas('tags', [
+            'id'   => 11,
+            'name' => 'test'
+        ]);
+
+        $this->assertDatabaseHas('post_tag', [
+            'post_id' => 1,
+            'tag_id'  => 11
+        ]);
+
+        $params  = [
+            'postId' => '1',
+            'title'  => 'test',
+            'post'   => 'test',
+            'tags'   => 'test2',
+        ];
+        $request->merge($params);
+        $postService->updatePost($request);
+
+        $this->assertDatabaseHas('posts', [
+            'id'    => 1,
+            'title' => 'test',
+            'post'  => 'test'
+        ]);
+
+        $this->assertDatabaseHas('tags', [
+            'id'   => 12,
+            'name' => 'test2'
+        ]);
+
+        $this->assertDatabaseMissing('tags', [
+            'id'   => 11,
+            'name' => 'test'
+        ]);
+
+        $this->assertDatabaseHas('post_tag', [
+            'post_id' => 1,
+            'tag_id'  => 12
+        ]);
+
+        $this->assertDatabaseMissing('post_tag', [
+            'post_id' => 1,
+            'tag_id'  => 11
+        ]);
     }
 }
