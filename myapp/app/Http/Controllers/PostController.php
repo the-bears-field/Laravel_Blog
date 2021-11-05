@@ -53,18 +53,8 @@ class PostController extends Controller
 
     public function update(PostRequest $request)
     {
-        $postId = $request->postId;
-        $userId = Auth::id();
-        $post = Post::with('users')->find($postId);
-        if(!$post) return redirect('/');
-        $user = $post->users->find($userId);
-        $params = [
-            'title' => $request->title,
-            'post' => $request->post
-        ];
-
-        if($user) Post::find($postId)->update($params);
-
+        $this->authorize('update', Post::class);
+        $this->postService->updatePost($request);
         return redirect('/');
     }
 
