@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Requests\PostRequest;
+use App\Models\Post;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TagRepositoryInterface;
@@ -53,15 +55,36 @@ class PostService implements PostServiceInterface
         $user = Auth::user();
         $user->posts()->syncWithoutDetaching(intval($post->id));
 
+        if($request->tags){
+            $sentTagNames = $this->stringToArray($request->tags);
+            $this->tagRegistAndSync($post, $sentTagNames);
+        }
+    }
+
+    public function updatePost(PostRequest $request): void
+    {
+        $this->postRepository->updatePost($request);
+
         if(!$request->tags){
             return;
         }
 
-        $sentTagNames      = $this->stringToArray($request->tags);
+        $postId          = intval($request->postId);
+        $post            = $this->postRepository->getPost($postId);
+        $sentTagNames    = $this->stringToArray($request->tags);
+        $currentTagNames = $post->tags->pluck('name')->toArray();
+        $addTagNames     = array_diff($sentTagNames, $currentTagNames);
+        $removeTagNames  = array_diff($currentTagNames, $sentTagNames);
+        $this->tagRegistAndSync($post, $addTagNames);
+        $this->tagDeleteAndDetach($post, $removeTagNames);
+    }
+
+    private function tagRegistAndSync(Post $post, array $tagNames)
+    {
         $availableTagNames = $this->tagRepository->getAvailableTagNames();
 
-        foreach($sentTagNames as $tagName){
-            $isExistTag =  in_array($tagName, $availableTagNames, true);
+        foreach($tagNames as $tagName){
+            $isExistTag = in_array($tagName, $availableTagNames, true);
 
             if(!$isExistTag) {
                 $insertedTag        = $this->tagRepository->createTag($tagName);
@@ -72,6 +95,30 @@ class PostService implements PostServiceInterface
         }
 
         $post->tags()->syncWithoutDetaching($attachTagIds);
+    }
+
+    private function tagDeleteAndDetach(Post $post, array $tagNames)
+    {
+        $detachTagIds = [];
+        // 紐付け解除の処理。
+        foreach($post->tags as $tag){
+            if(in_array($tag->name, $tagNames)){
+                $detachTagIds[] = $tag->id;
+            }
+        }
+
+        if($detachTagIds){
+            $post->tags()->detach($detachTagIds);
+        }
+
+        // postsテーブルと紐付けされていないtagsのレコードを削除。
+        $availableTags = $this->tagRepository->getAll();
+
+        foreach($availableTags as $tag){
+            if($tag->posts->isEmpty()){
+                $this->tagRepository->deleteTag($tag->name);
+            }
+        }
     }
 
     /**
