@@ -9,6 +9,7 @@ use App\Repositories\PostRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TagRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostService implements PostServiceInterface
@@ -77,6 +78,21 @@ class PostService implements PostServiceInterface
         $removeTagNames  = array_diff($currentTagNames, $sentTagNames);
         $this->tagRegistAndSync($post, $addTagNames);
         $this->tagDeleteAndDetach($post, $removeTagNames);
+    }
+
+    public function deletePost(Request $request): void
+    {
+        $postId = intval($request->postId);
+        $post   = $this->postRepository->getPost($postId);
+
+        if($post->tags->isNotEmpty()){
+            $removeTagNames = $post->tags->pluck('name')->toArray();
+            $this->tagDeleteAndDetach($post, $removeTagNames);
+        }
+
+        $post->users()->detach(Auth::id());
+
+        $this->postRepository->deletePost($request);
     }
 
     private function tagRegistAndSync(Post $post, array $tagNames)
