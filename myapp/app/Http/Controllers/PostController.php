@@ -68,17 +68,10 @@ class PostController extends Controller
 
     public function destroy(Request $request)
     {
-        $postId = $request->postId;
-        $userId = Auth::id();
-        $post = Post::with('users')->find($postId);
-        if(!$post) return redirect('/');
-        $user = $post->users->find($userId);
-
-        if($user){
-            $user->posts()->detach($postId);
-            Post::find($postId)->delete();
-        }
-
+        $postId = intval($request->postId);
+        $post = $this->postService->getPost($postId);
+        $this->authorize('delete', $post);
+        $this->postService->deletePost($request);
         return redirect('/');
     }
 }
