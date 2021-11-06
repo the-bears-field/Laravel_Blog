@@ -6,6 +6,7 @@ namespace App\Repositories;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -31,5 +32,10 @@ class PostRepository implements PostRepositoryInterface
     {
         $params = $request->only(['title', 'post']);
         Post::where('id', intval($request->postId))->update($params);
+    }
+
+    public function deletePost(Request $request): void
+    {
+        Post::where('id', intval($request->postId))->delete();
     }
 }
