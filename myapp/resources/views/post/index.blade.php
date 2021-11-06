@@ -16,6 +16,12 @@
                 @endforeach
             </ul>
             <p>{{ $post->post }}</p>
+            @can('viewAny', $post)
+                <ul>
+                    <li><a href="/edit/{{ $post->id }}">編集</a></li>
+                    <li><a href="/delete/{{ $post->id }}">削除</a></li>
+                </ul>
+            @endcan
         </div>
     @endforeach
 @endif
