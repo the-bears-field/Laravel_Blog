@@ -58,19 +58,12 @@ class PostController extends Controller
         return redirect('/');
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): View
     {
-        $postId = $request->postId;
-        $userId = Auth::id();
-        $post = Post::with('users')->find($postId);
-        if(!$post) return redirect('/');
-        $user = $post->users->find($userId);
-        $params = [
-            'title' => $post->title,
-            'post' => $post->post
-        ];
-
-        return $user ? view('post.delete', $params) : redirect('/');
+        $postId = intval($request->postId);
+        $post = $this->postService->getPost($postId);
+        $this->authorize('view', $post);
+        return view('post.delete', compact('post'));
     }
 
     public function destroy(Request $request)
