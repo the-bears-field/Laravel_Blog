@@ -13,5 +13,6 @@
 </div>
 <form action="/delete" method="POST">
     @csrf
+    <input type="hidden" name="postId" value="{{ $post->id }}">
     <div><input type="submit" value="削除"></div>
 </form>
