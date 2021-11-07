@@ -163,4 +163,40 @@ class PostServiceTest extends TestCase
             'tag_id'  => 11
         ]);
     }
+
+    public function test_deletePostメソッドが正常に作動する()
+    {
+        $this->actingAs($this->user);
+
+        $request = new PostRequest;
+        $params  = ['postId' => '1'];
+        $request->merge($params);
+
+        $this->assertDatabaseHas('posts', [
+            'id'    => 1,
+            'title' => 'test',
+            'post'  => 'test'
+        ]);
+
+        $this->assertDatabaseHas('post_tag', [
+            'post_id' => 1
+        ]);
+
+        $postService = App::make(PostServiceInterface::class);
+        $postService->deletePost($request);
+
+        $this->assertDatabaseMissing('posts', [
+            'id'    => 1,
+            'title' => 'test',
+            'post'  => 'test'
+        ]);
+
+        $this->assertDatabaseMissing('post_tag', [
+            'post_id' => 1
+        ]);
+
+        $this->assertDatabaseMissing('post_user', [
+            'post_id' => 1
+        ]);
+    }
 }
