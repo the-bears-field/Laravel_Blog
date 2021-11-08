@@ -1,6 +1,6 @@
-<form action="/edit" method="POST">
+<form action="{{ route('update', ['postId' => $post->id]) }}" method="POST">
     @csrf
-    <input type="hidden" name="postId" value="{{ $post->id }}">
+    @method('put')
     <div><input type="text" name="title" value="{{ $post->title }}"></div>
     <textarea name="post">{{ $post->post }}</textarea>
     <div><input type="text" name="tags" value="{{ $post->tags }}"></div>

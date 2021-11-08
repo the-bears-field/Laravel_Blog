@@ -11,8 +11,8 @@
     </ul>
     <p>{{ $post->post }}</p>
 </div>
-<form action="/delete" method="POST">
+<form action="{{ route('destroy', ['postId' => $post->id]) }}" method="POST">
     @csrf
-    <input type="hidden" name="postId" value="{{ $post->id }}">
+    @method('delete')
     <div><input type="submit" value="削除"></div>
 </form>

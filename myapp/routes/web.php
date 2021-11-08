@@ -26,9 +26,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/new', [PostController::class, 'new']);
     Route::post('/new', [PostController::class, 'create']);
     Route::get('/edit/{postId}', [PostController::class, 'edit']);
-    Route::post('/edit', [PostController::class, 'update']);
+    Route::put('/edit/{postId}', [PostController::class, 'update'])->name('update');
     Route::get('/delete/{postId}', [PostController::class, 'delete']);
-    Route::post('/delete', [PostController::class, 'destroy']);
+    Route::delete('/delete/{postId}', [PostController::class, 'destroy'])->name('destroy');
     Route::get('/user', [UserController::class, 'index']);
 });
 
