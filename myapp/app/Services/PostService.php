@@ -98,6 +98,7 @@ class PostService implements PostServiceInterface
     private function tagRegistAndSync(Post $post, array $tagNames)
     {
         $availableTagNames = $this->tagRepository->getAvailableTagNames();
+        $attachTagIds      = [];
 
         foreach($tagNames as $tagName){
             $isExistTag = in_array($tagName, $availableTagNames, true);
@@ -110,7 +111,9 @@ class PostService implements PostServiceInterface
             $attachTagIds[] = array_search($tagName, $availableTagNames, true);
         }
 
-        $post->tags()->syncWithoutDetaching($attachTagIds);
+        if($attachTagIds){
+            $post->tags()->syncWithoutDetaching($attachTagIds);
+        }
     }
 
     private function tagDeleteAndDetach(Post $post, array $tagNames)
