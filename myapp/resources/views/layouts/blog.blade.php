@@ -6,6 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <link rel="stylesheet" href="{{ asset('/css/normalize.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
 <title>@yield('title')</title>
 </head>
 <body>
