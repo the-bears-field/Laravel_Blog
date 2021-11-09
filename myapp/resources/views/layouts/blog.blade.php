@@ -44,16 +44,12 @@
             </form>
         @else
             <a class="header__link" href="/login" ontouchstart="">ログイン</a>
-            <a class="header__link" href="null" ontouchstart="">新規登録</a>
+            <a class="header__link" href="register" ontouchstart="">新規登録</a>
         @endif
     </div>
 </header>
 <div class="message"></div>
-<main class="main main--has-right-sidebar">
-    @yield('content')
-</main>
-<div class="sidebar right-sidebar">
-</div>
+@yield('content')
 <footer class="footer">
     <p class="footer__copyright">copyright 2019 Satoshi Kumano</p>
 </footer>
