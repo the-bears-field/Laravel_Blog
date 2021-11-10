@@ -16,15 +16,15 @@
                             <div class="posts__nav posts-nav">
                                 <span class="posts-nav__icon fas fa-ellipsis-h"></span>
                                 <div class="posts-nav__menu" ontouchstart="">
-                                <a class="posts-nav__link flex-direction-row" href="/edit/{{ $post->id }}">
-                                    <i class="fas fa-pen"></i>
-                                    <span class="posts-nav__link-text">編集</span>
-                                </a>
-                                <a class="posts-nav__link flex-direction-row margin-top-10px" href="/delete/{{ $post->id }}>">
-                                    <i class="fas fa-trash-alt"></i>
-                                    <span class="posts-nav__link-text">削除</span>
-                                </a>
-                            </div>
+                                    <a class="posts-nav__link flex-direction-row" href="/edit/{{ $post->id }}">
+                                        <i class="fas fa-pen"></i>
+                                        <span class="posts-nav__link-text">編集</span>
+                                    </a>
+                                    <a class="posts-nav__link flex-direction-row margin-top-10px" href="/delete/{{ $post->id }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <span class="posts-nav__link-text">削除</span>
+                                    </a>
+                                </div>
                             </div>
                         @endcan
                         <h1 class="posts__title margin-top-20px"><a href="{{ route('post.show', ['postId' => $post->id]) }}">{{ $post->title }}</a></h1>
