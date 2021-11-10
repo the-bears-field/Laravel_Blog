@@ -467,7 +467,7 @@
 
     .posts__nav {
         align-self: flex-end;
-        position: relative;
+        position: absolute;
         top: 20px;
     }
 
