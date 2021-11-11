@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Services\PostServiceInterface;
+use App\Services\TagServiceInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,16 +14,22 @@ use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
     private PostServiceInterface $postService;
+    private TagServiceInterface  $tagService;
 
-    public function __construct(PostServiceInterface $postService)
+    public function __construct(
+        PostServiceInterface $postService,
+        TagServiceInterface  $tagService
+    )
     {
         $this->postService = $postService;
+        $this->tagService  = $tagService;
     }
 
     public function index(Request $request): View
     {
         $posts = $this->postService->getAll();
-        return view('post.index', compact('posts'));
+        $tags  = $this->tagService->getAll();
+        return view('post.index', compact('posts', 'tags'));
     }
 
     public function show(Request $request)
