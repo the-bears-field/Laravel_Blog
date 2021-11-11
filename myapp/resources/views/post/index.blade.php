@@ -57,4 +57,16 @@
         @endif
     </main>
 @endsection
-@include('layouts.sidebar')
+
+@section('sidebar')
+    <aside class="sidebar right-sidebar">
+        <div class="sidebar__inner right-sidebar__inner flex-direction-column">
+            <h2 class="sidebar__caption">タグ一覧</h2>
+            <div class="sidebar__tags">
+                @foreach($tags as $tag)
+                    <a class="sidebar__tags-item" href="null">{{ $tag->name }}</a>
+                @endforeach
+            </div>
+        </div>
+    </aside>
+@endsection
