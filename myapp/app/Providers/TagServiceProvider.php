@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\TagRepository;
 use App\Repositories\TagRepositoryInterface;
+use App\Services\TagService;
+use App\Services\TagServiceInterface;
 
 class TagServiceProvider extends ServiceProvider
 {
@@ -18,6 +20,13 @@ class TagServiceProvider extends ServiceProvider
         $this->app->bind(
             TagRepositoryInterface::class,
             TagRepository::class
+        );
+
+        $this->app->bind(TagServiceInterface::class, function ($app): TagService {
+                return new TagService(
+                    $app->make(TagRepositoryInterface::class)
+                );
+            }
         );
     }
 
