@@ -43,7 +43,7 @@
                         @if($post->tags->isNotEmpty())
                             <div class="posts__tags tags flex-direction-row">
                                 @foreach($post->tags as $tag)
-                                    <a class="tags__link" href="null">{{ $tag->name }}</a>
+                                    <a class="tags__link" href="/tag/{{ $tag->name }}">{{ $tag->name }}</a>
                                 @endforeach
                             </div>
                         @endif
@@ -64,7 +64,7 @@
             <h2 class="sidebar__caption">タグ一覧</h2>
             <div class="sidebar__tags">
                 @foreach($tags as $tag)
-                    <a class="sidebar__tags-item" href="null">{{ $tag->name }}</a>
+                    <a class="sidebar__tags-item" href="/tag/{{ $tag->name }}">{{ $tag->name }}</a>
                 @endforeach
             </div>
         </div>
