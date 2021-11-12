@@ -19,4 +19,15 @@ class TagService implements TagServiceInterface
     {
         return $this->tagRepository->getAll();
     }
+
+    public function getTag(string $tagName)
+    {
+        $tag = $this->tagRepository->getTag($tagName);
+
+        if($tag && $tag->posts->isNotEmpty()){
+            $tag->posts = $tag->posts->sortByDesc('updated_at');
+        }
+
+        return $tag;
+    }
 }

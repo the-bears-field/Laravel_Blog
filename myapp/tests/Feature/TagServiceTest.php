@@ -58,4 +58,15 @@ class TagServiceTest extends TestCase
         $tags       = $tagService->getAll();
         $this->assertTrue($tags->isNotEmpty());
     }
+
+    public function test_getTagメソッドが正常に作動するか()
+    {
+        $tagService = App::make(TagServiceInterface::class);
+        $tags       = $tagService->getAll();
+
+        foreach($tags as $tag){
+            $tagInstance = $tagService->getTag($tag->name);
+            $this->assertEquals($tagInstance::class, Tag::class);
+        }
+    }
 }

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Collection;
 interface TagServiceInterface
 {
     public function getAll(): Collection;
+    public function getTag(string $tagName);
 }
