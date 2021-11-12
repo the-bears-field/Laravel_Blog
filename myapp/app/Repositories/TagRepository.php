@@ -13,6 +13,11 @@ class TagRepository implements TagRepositoryInterface
         return Tag::with('posts')->oldest('id')->get();
     }
 
+    public function getTag(string $tagName)
+    {
+        return Tag::with('posts')->where('name', $tagName)->first();
+    }
+
     public function createTag(string $string): Tag
     {
         return Tag::create(['name' => $string]);
