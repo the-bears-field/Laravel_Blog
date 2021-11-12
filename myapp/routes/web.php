@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 
@@ -33,3 +34,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');
+Route::get('/tag/{tagName}', [TagController::class, 'index'])->name('tag.index');
