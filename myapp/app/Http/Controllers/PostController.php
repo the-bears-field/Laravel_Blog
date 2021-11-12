@@ -35,8 +35,9 @@ class PostController extends Controller
     public function show(Request $request)
     {
         $postId = intval($request->postId);
-        $post = $this->postService->getPost($postId);
-        return $post ? view('post.show', compact('post')) : redirect('/');
+        $post   = $this->postService->getPost($postId);
+        $tags   = $this->tagService->getAll();
+        return $post ? view('post.show', compact('post', 'tags')) : redirect('/');
     }
 
     public function new(): View
