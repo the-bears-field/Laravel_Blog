@@ -40,6 +40,14 @@ class PostController extends Controller
         return $post ? view('post.show', compact('post', 'tags')) : redirect('/');
     }
 
+    public function search(Request $request): View
+    {
+        $searchWord = $request->searchWord;
+        $posts = $this->postService->getPostsWithSearchWords($searchWord);
+        $tags  = $this->tagService->getAll();
+        return view('post.search', compact('posts', 'tags', 'searchWord'));
+    }
+
     public function new(): View
     {
         return view('post.new');
