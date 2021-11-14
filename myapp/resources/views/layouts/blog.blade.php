@@ -8,6 +8,10 @@
 <link rel="stylesheet" href="{{ asset('/css/style.css'). '?datetime='. date("YmdHis") }}">
 <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css'). '?datetime='. date("YmdHis") }}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+@if ( request()->is('*new') || request()->is('*edit/*') )
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css">
+@endif
 <script src="{{ asset('/js/blog.js'). '?datetime='. date("YmdHis") }}"></script>
 <title>@yield('title')</title>
 </head>

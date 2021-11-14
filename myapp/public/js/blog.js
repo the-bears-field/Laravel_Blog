@@ -113,7 +113,17 @@ $(document).ready(function(){
     }
 
     /**************************************** new.php, edit.php ****************************************/
-
+    if (document.URL.match(/new/) || document.URL.match(/edit/)) {
+        //trumbowyg生成
+        $('#post-form').trumbowyg({
+            autogrow:            true,
+            imageWidthModalEdit: true,
+            lang:                'ja',
+            resetCss:            true,
+            tagsToKeep:          ['i'],
+            tagsToRemove:        ['script']
+        });
+    }
     /**************************************** login.php ****************************************/
 
     /**************************************** functions ****************************************/
