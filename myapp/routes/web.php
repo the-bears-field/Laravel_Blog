@@ -19,8 +19,7 @@ use App\Http\Controllers\HomeController;
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+Route::get('/search', [PostController::class, 'search'])->name('post.search');
 Route::get('/', [PostController::class, 'index']);
 
 Route::middleware(['auth'])->group(function () {
