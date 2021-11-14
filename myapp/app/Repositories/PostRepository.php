@@ -22,6 +22,23 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
+    public function getPostsWithSearchWords(array $searchWords): Collection
+    {
+        return Post::with('users')
+                ->with('tags')
+                ->where(function ($query) use ($searchWords) {
+                    foreach($searchWords as $word){
+                        $query->where('post', 'LIKE', "%$word%");
+                    }
+                })
+                ->orWhere(function ($query) use ($searchWords) {
+                    foreach($searchWords as $word){
+                        $query->where('title', 'LIKE', "%$word%");
+                    }
+                })
+                ->get();
+    }
+
     public function createPost(PostRequest $request): Post
     {
         $params = $request->only(['title', 'post']);
