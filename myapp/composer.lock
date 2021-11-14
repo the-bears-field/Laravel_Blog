@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78c979398384e2111b02f7b3974457e3",
+    "content-hash": "c967f86f320f6ea819e81aee4b5816c8",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1952,6 +1952,123 @@
                 "source": "https://github.com/justinrainbow/json-schema/tree/5.2.11"
             },
             "time": "2021-07-22T09:24:00+00:00"
+        },
+        {
+            "name": "lampager/lampager",
+            "version": "v0.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lampager/lampager.git",
+                "reference": "b3fae23f7e42f37a4650c366d44b2bc5960d9628"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lampager/lampager/zipball/b3fae23f7e42f37a4650c366d44b2bc5960d9628",
+                "reference": "b3fae23f7e42f37a4650c366d44b2bc5960d9628",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "codeception/specify": "^0.4.6",
+                "nilportugues/sql-query-formatter": "^1.2.2",
+                "php-coveralls/php-coveralls": "^1.0",
+                "phpunit/phpunit": "^6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lampager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mpyw",
+                    "email": "ryosuke_i_628@yahoo.co.jp"
+                }
+            ],
+            "description": "Rapid pagination without using OFFSET",
+            "keywords": [
+                "limit",
+                "offset",
+                "pagination",
+                "paginator"
+            ],
+            "support": {
+                "issues": "https://github.com/lampager/lampager/issues",
+                "source": "https://github.com/lampager/lampager/tree/v0.4.2"
+            },
+            "time": "2021-07-21T16:25:19+00:00"
+        },
+        {
+            "name": "lampager/lampager-laravel",
+            "version": "v0.4.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lampager/lampager-laravel.git",
+                "reference": "59d29263a97a576375b007aaecfb777cdb62a9a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lampager/lampager-laravel/zipball/59d29263a97a576375b007aaecfb777cdb62a9a1",
+                "reference": "59d29263a97a576375b007aaecfb777cdb62a9a1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/contracts": "^5.5.14 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/database": "^5.5.14 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/support": "^5.5.14 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "lampager/lampager": "^0.4",
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "nilportugues/sql-query-formatter": "^1.2.2",
+                "orchestra/testbench": "^6.0",
+                "php-coveralls/php-coveralls": "^2.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lampager\\Laravel\\MacroServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lampager\\Laravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mpyw",
+                    "email": "ryosuke_i_628@yahoo.co.jp"
+                }
+            ],
+            "description": "Rapid pagination for Laravel",
+            "keywords": [
+                "illuminate",
+                "laravel",
+                "limit",
+                "offset",
+                "pagination",
+                "paginator"
+            ],
+            "support": {
+                "issues": "https://github.com/lampager/lampager-laravel/issues",
+                "source": "https://github.com/lampager/lampager-laravel/tree/v0.4.7"
+            },
+            "time": "2021-06-24T13:47:08+00:00"
         },
         {
             "name": "laravel/framework",
