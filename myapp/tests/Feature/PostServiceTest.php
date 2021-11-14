@@ -199,4 +199,24 @@ class PostServiceTest extends TestCase
             'post_id' => 1
         ]);
     }
+
+    public function test_getPostsWithSearchWordsメソッドで検索に応じた結果が返ってくるか検証()
+    {
+        $this->actingAs($this->user);
+
+        $request = new PostRequest;
+        $params  = [
+            'title' => 'Steve Jobs wise saying.',
+            'post'  => 'Stay Hungry. Stay Foolish.',
+            'tags'  => 'Steve_Jobs Wise_saying Stanford_University Speech Apple',
+        ];
+        $request->merge($params);
+
+        $postService = App::make(PostServiceInterface::class);
+        $postService->createPost($request);
+
+        $searchWords = 'Hungry Foolish';
+        $posts = $postService->getPostsWithSearchWords($searchWords);
+        $this->assertTrue($posts->isNotEmpty());
+    }
 }

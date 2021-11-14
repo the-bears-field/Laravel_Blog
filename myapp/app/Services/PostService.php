@@ -50,6 +50,12 @@ class PostService implements PostServiceInterface
         return $post;
     }
 
+    public function getPostsWithSearchWords(string $searchWords): Collection
+    {
+        $searchWords = $this->stringToArray($searchWords);
+        return $this->postRepository->getPostsWithSearchWords($searchWords);
+    }
+
     public function createPost($request): void
     {
         $post = $this->postRepository->createPost($request);

@@ -12,6 +12,7 @@ interface PostServiceInterface
     public function getAll(): Collection;
     public function getPost(int $postId);
     public function getPostForForm(int $postId);
+    public function getPostsWithSearchWords(string $searchWords): Collection;
     public function createPost($request): void;
     public function updatePost(PostRequest $request): void;
     public function deletePost(Request $request): void;
