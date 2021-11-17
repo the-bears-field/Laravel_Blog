@@ -468,7 +468,6 @@
     .posts__nav {
         align-self: flex-end;
         position: absolute;
-        top: 20px;
     }
 
     .posts-nav {
@@ -563,7 +562,7 @@
     }
 
     .posts__button {
-        margin: 50px 0 20px auto;
+        margin: 50px 0 auto auto;
     }
 
     .main__paginator {
