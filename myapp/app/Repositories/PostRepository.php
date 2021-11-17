@@ -5,14 +5,14 @@ namespace App\Repositories;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostRepository implements PostRepositoryInterface
 {
-    public function getAll(): Collection
+    public function getAll(): LengthAwarePaginator
     {
-        $posts = Post::with('users')->with('tags')->latest('id')->get();
+        $posts = Post::with('users')->with('tags')->orderByDesc('id')->paginate(10);
         return $posts;
     }
 
@@ -22,7 +22,7 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
-    public function getPostsWithSearchWords(array $searchWords): Collection
+    public function getPostsWithSearchWords(array $searchWords): LengthAwarePaginator
     {
         return Post::with('users')
                 ->with('tags')
@@ -36,7 +36,7 @@ class PostRepository implements PostRepositoryInterface
                         $query->where('title', 'LIKE', "%$word%");
                     }
                 })
-                ->get();
+                ->paginate(10);
     }
 
     public function createPost(PostRequest $request): Post
