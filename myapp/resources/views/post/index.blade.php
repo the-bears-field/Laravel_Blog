@@ -3,7 +3,7 @@
 @section('title', 'Index')
 
 @section('content')
-    <main class="main main--has-right-sidebar">
+    <main class="main main--has-right-sidebar flex-direction-column">
         @if($posts->isEmpty())
             <div>
                 <p>まだ投稿されていません。</p>
@@ -54,6 +54,7 @@
                     </article>
                 </div>
             @endforeach
+            {{ $posts->links('pagination.default') }}
         @endif
     </main>
 @endsection

@@ -3,7 +3,7 @@
 @section('title', 'Edit')
 
 @section('content')
-    <main class="main main--has-right-sidebar">
+    <main class="main main--has-right-sidebar flex-direction-column">
         <article class="main__wysiwyg wysiwyg">
             <form method="post" class="wysiwyg__form flex-direction-column">
                 @csrf

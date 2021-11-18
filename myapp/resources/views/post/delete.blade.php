@@ -3,7 +3,7 @@
 @section('title', 'Delete')
 
 @section('content')
-    <main class="main main--has-right-sidebar">
+    <main class="main main--has-right-sidebar flex-direction-column">
         <div class="main__posts posts">
             <article class="posts__content flex-direction-column">
                 <h1 class="posts__title margin-top-20px">{{ $post->title }}</h1>

@@ -3,7 +3,7 @@
 @section('title', $searchWord)
 
 @section('content')
-    <main class="main main--has-right-sidebar">
+    <main class="main main--has-right-sidebar flex-direction-column">
         @if($posts->isEmpty())
             <article class="search-result-message">
                 {{ $searchWord }} に一致する結果は見つかりませんでした。
