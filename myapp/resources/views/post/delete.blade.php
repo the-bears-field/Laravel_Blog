@@ -27,7 +27,7 @@
                     </div>
                 @endif
                 <div class="posts__text posts__text--post margin-top-50px">
-                    {{ $post->post }}
+                    {!! (new HTMLPurifier())->purify($post->post); !!}
                 </div>
                 <form class="posts__button-wrapper flex-direction-row" action="{{ route('destroy', ['postId' => $post->id]) }}" method="post">
                     @csrf

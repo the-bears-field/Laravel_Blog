@@ -42,7 +42,7 @@
                     </div>
                 @endif
                 <div class="posts__text posts__text--post margin-top-50px">
-                    {{ $post->post }}
+                    {!! (new HTMLPurifier())->purify($post->post); !!}
                 </div>
             </article>
         </div>
