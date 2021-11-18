@@ -5,9 +5,9 @@
 @section('content')
     <main class="main main--has-right-sidebar flex-direction-column">
         @if($posts->isEmpty())
-            <div>
+            <article class="search-result-message">
                 <p>まだ投稿されていません。</p>
-            </div>
+            </article>
         @else
             @foreach($posts as $post)
                 <div class="main__posts posts">
