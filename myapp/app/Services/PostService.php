@@ -8,8 +8,8 @@ use App\Models\Post;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TagRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class PostService implements PostServiceInterface
@@ -29,7 +29,7 @@ class PostService implements PostServiceInterface
         $this->userRepository = $userRepository;
     }
 
-    public function getAll(): Collection
+    public function getAll(): LengthAwarePaginator
     {
         return $this->postRepository->getAll();
     }
@@ -50,7 +50,7 @@ class PostService implements PostServiceInterface
         return $post;
     }
 
-    public function getPostsWithSearchWords(string $searchWords): Collection
+    public function getPostsWithSearchWords(string $searchWords): LengthAwarePaginator
     {
         $searchWords = $this->stringToArray($searchWords);
         return $this->postRepository->getPostsWithSearchWords($searchWords);
