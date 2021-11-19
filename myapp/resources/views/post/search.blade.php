@@ -57,6 +57,9 @@
                     </article>
                 </div>
             @endforeach
+            <div class="main__paginator paginator">
+                {{ $posts->links('pagination.default') }}
+            </div>
         @endif
     </main>
 @endsection
