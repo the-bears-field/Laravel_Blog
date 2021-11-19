@@ -10,9 +10,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostRepository implements PostRepositoryInterface
 {
+    private $perPage = 10;
+
     public function getAll(): LengthAwarePaginator
     {
-        $posts = Post::with('users')->with('tags')->orderByDesc('id')->paginate(10);
+        $posts = Post::with('users')->with('tags')->orderByDesc('id')->paginate($this->perPage);
         return $posts;
     }
 
@@ -36,7 +38,7 @@ class PostRepository implements PostRepositoryInterface
                         $query->where('title', 'LIKE', "%$word%");
                     }
                 })
-                ->paginate(10);
+                ->paginate($this->perPage);
     }
 
     public function createPost(PostRequest $request): Post
