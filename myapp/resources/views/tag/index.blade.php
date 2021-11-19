@@ -3,7 +3,7 @@
 @section('title', $tagName)
 
 @section('content')
-    <main class="main main--has-right-sidebar">
+    <main class="main main--has-right-sidebar flex-direction-column">
         @if(!$tag || $tag->posts->isEmpty())
             <article class="search-result-message">
                 #{{ $tagName }} に一致する結果は見つかりませんでした。
