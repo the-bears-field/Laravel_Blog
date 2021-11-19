@@ -58,27 +58,29 @@ class PostService implements PostServiceInterface
 
     public function createPost($request): void
     {
-        $post = $this->postRepository->createPost($request);
+        $purifiedRequest = $this->getPurifiedRequest($request);
+        $post = $this->postRepository->createPost($purifiedRequest);
         $user = Auth::user();
         $user->posts()->syncWithoutDetaching(intval($post->id));
 
         if($request->tags){
-            $sentTagNames = $this->stringToArray($request->tags);
+            $sentTagNames = $this->stringToArray($purifiedRequest->tags);
             $this->tagRegistAndSync($post, $sentTagNames);
         }
     }
 
     public function updatePost(PostRequest $request): void
     {
-        $this->postRepository->updatePost($request);
+        $purifiedRequest = $this->getPurifiedRequest($request);
+        $this->postRepository->updatePost($purifiedRequest);
 
-        if(!$request->tags){
+        if(!$purifiedRequest->tags){
             return;
         }
 
-        $postId          = intval($request->postId);
+        $postId          = intval($purifiedRequest->postId);
         $post            = $this->postRepository->getPost($postId);
-        $sentTagNames    = $this->stringToArray($request->tags);
+        $sentTagNames    = $this->stringToArray($purifiedRequest->tags);
         $currentTagNames = $post->tags->pluck('name')->toArray();
         $addTagNames     = array_diff($sentTagNames, $currentTagNames);
         $removeTagNames  = array_diff($currentTagNames, $sentTagNames);
@@ -144,6 +146,11 @@ class PostService implements PostServiceInterface
                 $this->tagRepository->deleteTag($tag->name);
             }
         }
+    }
+
+    private function getPurifiedRequest($request)
+    {
+        return $request->merge(['post' => clean($request->post)]);
     }
 
     /**

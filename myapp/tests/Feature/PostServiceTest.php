@@ -74,7 +74,7 @@ class PostServiceTest extends TestCase
         $request = new PostRequest;
         $params  = [
             'title' => 'example',
-            'post'  => 'example',
+            'post'  => '<p>example</p>',
             'tags'  => 'example1 example2 example3',
         ];
         $request->merge($params);
@@ -84,7 +84,7 @@ class PostServiceTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'title' => 'example',
-            'post'  => 'example'
+            'post'  => '<p>example</p>'
         ]);
 
         $verificationTagNames = ['example1', 'example2', 'example3'];
@@ -96,6 +96,34 @@ class PostServiceTest extends TestCase
         }
     }
 
+    public function test_createPostメソッドでのエスケープ処理が正常に作動するか検証()
+    {
+        $this->actingAs($this->user);
+
+        $request = new PostRequest;
+        $params  = [
+            'title' => 'XSS test',
+            'post'  => '<p>a</p><script>alert("!!!");</script>',
+            'tags'  => 'example1 example2 example3',
+        ];
+        $request->merge($params);
+
+        $postService = App::make(PostServiceInterface::class);
+        $postService->createPost($request);
+        $post = $postService->getPost(2);
+
+        $this->assertDatabaseMissing('posts', [
+            'post' => '<p>a</p><script>alert("!!!");</script>'
+        ]);
+
+        $this->assertDatabaseHas('posts', [
+            'post' => '<p>a</p>'
+        ]);
+
+        $this->assertFalse($post->post === '<p>a</p><script>alert("!!!");</script>');
+        $this->assertTrue($post->post === '<p>a</p>');
+    }
+
     public function test_updatePostメソッドが正常に作動する()
     {
         $this->actingAs($this->user);
@@ -104,7 +132,7 @@ class PostServiceTest extends TestCase
         $params  = [
             'postId' => '1',
             'title'  => 'example',
-            'post'   => 'example',
+            'post'   => '<p>example</p>',
             'tags'   => 'test',
         ];
         $request->merge($params);
@@ -115,7 +143,7 @@ class PostServiceTest extends TestCase
         $this->assertDatabaseHas('posts', [
             'id'    => 1,
             'title' => 'example',
-            'post'  => 'example'
+            'post'  => '<p>example</p>'
         ]);
 
         $this->assertDatabaseHas('tags', [
@@ -131,7 +159,7 @@ class PostServiceTest extends TestCase
         $params  = [
             'postId' => '1',
             'title'  => 'test',
-            'post'   => 'test',
+            'post'   => '<p>test</p>',
             'tags'   => 'test2',
         ];
         $request->merge($params);
@@ -140,7 +168,7 @@ class PostServiceTest extends TestCase
         $this->assertDatabaseHas('posts', [
             'id'    => 1,
             'title' => 'test',
-            'post'  => 'test'
+            'post'  => '<p>test</p>'
         ]);
 
         $this->assertDatabaseHas('tags', [
@@ -162,6 +190,38 @@ class PostServiceTest extends TestCase
             'post_id' => 1,
             'tag_id'  => 11
         ]);
+    }
+
+    public function test_updatePostメソッドでのエスケープ処理が正常に作動するか検証()
+    {
+        $this->actingAs($this->user);
+
+        $request = new PostRequest;
+        $params  = [
+            'postId' => '1',
+            'title'  => 'XSS Attack',
+            'post'   => '<p>a</p><script>alert("!!!");</script>',
+            'tags'   => 'XSS',
+        ];
+        $request->merge($params);
+
+        $postService = App::make(PostServiceInterface::class);
+        $postService->updatePost($request);
+
+        $post = $postService->getPost(1);
+
+        $this->assertDatabaseMissing('posts', [
+            'id'   => 1,
+            'post' => '<p>a</p><script>alert("!!!");</script>'
+        ]);
+
+        $this->assertDatabaseHas('posts', [
+            'id'   => 1,
+            'post' => '<p>a</p>'
+        ]);
+
+        $this->assertFalse($post->post === '<p>a</p><script>alert("!!!");</script>');
+        $this->assertTrue($post->post === '<p>a</p>');
     }
 
     public function test_deletePostメソッドが正常に作動する()
