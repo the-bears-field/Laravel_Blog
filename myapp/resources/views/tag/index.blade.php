@@ -51,7 +51,7 @@
                             </div>
                         @endif
                         <div class="posts__text">
-                            {{ $post->post }}
+                            {!! clean($post->post) !!}
                         </div>
                         <a class="button button--enabled posts__button" href="{{ route('post.show', ['postId' => $post->id]) }}">続きを読む</a>
                     </article>
