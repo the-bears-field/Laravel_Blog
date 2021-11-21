@@ -1,29 +1,58 @@
+{{-- 変数、定数の定義 --}}
+{{-- ページネーションのリンク数を定義 --}}
+@php
+    define('PAGINATE_LINK_NUM', 10)
+@endphp
+
+{{-- 定数よりもページ数が多い時 --}}
+@if ($paginator->lastPage() > PAGINATE_LINK_NUM)
+
+    {{-- 現在ページが表示するリンクの中心位置よりも左の時 --}}
+    @if ($paginator->currentPage() <= floor(PAGINATE_LINK_NUM / 2))
+        @php
+            $startPage = 1;
+            $endPage   = PAGINATE_LINK_NUM;
+        @endphp
+
+    {{-- 現在ページが表示するリンクの中心位置よりも右の時 --}}
+    @elseif ($paginator->currentPage() > $paginator->lastPage() - floor(PAGINATE_LINK_NUM / 2))
+        @php
+            $startPage = $paginator->lastPage() - (PAGINATE_LINK_NUM - 1);
+            $endPage   = $paginator->lastPage();
+        @endphp
+
+    {{-- 現在ページが表示するリンクの中心位置の時 --}}
+    @else
+        @php
+            $startPage = intval(round($paginator->currentPage() - floor(PAGINATE_LINK_NUM % 2 == 0 ? PAGINATE_LINK_NUM - 1 : PAGINATE_LINK_NUM) / 2));
+            $endPage   = intval(round($paginator->currentPage() + floor(PAGINATE_LINK_NUM / 2)));
+        @endphp
+    @endif
+{{-- 定数よりもページ数が少ない時 --}}
+@else
+    @php
+        $startPage = 1;
+        $endPage   = $paginator->lastPage();
+    @endphp
+@endif
+
+{{-- 以下ビューの出力 --}}
 @if($paginator->hasPages())
-    {{-- Previous Page Link --}}
     <div class="paginator__nav flex-direction-row">
+        {{-- Previous Page Link --}}
         @if(!$paginator->onFirstPage())
             <a href="{{ $paginator->url(1) }}" class="pagenator__link" title="first page"><i class="fas fa-angle-double-left"></i></a>
             <a href="{{ $paginator->previousPageUrl() }}" class="pagenator__link" title="previous page"><i class="fas fa-chevron-left"></i></a>
         @endif
 
         {{-- Pagination Elements --}}
-        @foreach ($elements as $element)
-            {{-- "Three Dots" Separator --}}
-            @if (is_string($element))
-                <span class="pagenator__link" aria-disabled="true"><i class="fas fa-ellipsis-h"></i></span>
+        @for($i = $startPage; $i <= $endPage; $i++)
+            @if($paginator->currentPage() === $i)
+                <span class="pagenator__link_current"><b>{{ $i }}</b></span>
+            @else
+                <a href="{{ $paginator->url($i) }}" class="pagenator__link" title="page {{ $i }}">{{ $i }}</a>
             @endif
-
-            {{-- Array Of Links --}}
-            @if (is_array($element))
-                @foreach ($element as $page => $url)
-                    @if ($page == $paginator->currentPage())
-                       <span class="pagenator__link_current"><b>{{ $page }}</b></span>
-                    @else
-                        <a href="{{ $url }}" class="pagenator__link" title="page {{ $page }}">{{ $page }}</a>
-                    @endif
-                @endforeach
-            @endif
-        @endforeach
+        @endfor
 
         {{-- Next Page Link --}}
         @if($paginator->hasMorePages())
