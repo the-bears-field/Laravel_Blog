@@ -13,6 +13,7 @@ interface PostRepositoryInterface
     public function getAll(): LengthAwarePaginator;
     public function getPost(int $postId);
     public function getPostsWithSearchWords(array $searchWords): LengthAwarePaginator;
+    public function getPostsWithSearchTag(string $searchTag): LengthAwarePaginator;
     public function createPost(PostRequest $request): Post;
     public function updatePost(PostRequest $request): void;
     public function deletePost(Request $request): void;

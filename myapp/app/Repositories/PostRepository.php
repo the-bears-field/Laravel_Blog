@@ -5,16 +5,17 @@ namespace App\Repositories;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostRepository implements PostRepositoryInterface
 {
-    private $perPage = 10;
+    private const PER_PAGE = 10;
 
     public function getAll(): LengthAwarePaginator
     {
-        $posts = Post::with('users')->with('tags')->orderByDesc('id')->paginate($this->perPage);
+        $posts = Post::with('users')->with('tags')->orderByDesc('id')->paginate(self::PER_PAGE);
         return $posts;
     }
 
@@ -28,17 +29,27 @@ class PostRepository implements PostRepositoryInterface
     {
         return Post::with('users')
                 ->with('tags')
-                ->where(function ($query) use ($searchWords) {
+                ->where(function (Builder $query) use ($searchWords) {
                     foreach($searchWords as $word){
                         $query->where('post', 'LIKE', "%$word%");
                     }
                 })
-                ->orWhere(function ($query) use ($searchWords) {
+                ->orWhere(function (Builder $query) use ($searchWords) {
                     foreach($searchWords as $word){
                         $query->where('title', 'LIKE', "%$word%");
                     }
                 })
-                ->paginate($this->perPage);
+                ->paginate(self::PER_PAGE);
+    }
+
+    public function getPostsWithSearchTag(string $searchTag): LengthAwarePaginator
+    {
+        return Post::with('users')
+                ->with('tags')
+                ->whereHas('tags', function (Builder $query) use ($searchTag) {
+                    $query->where('name', $searchTag);
+                })
+                ->paginate(self::PER_PAGE);
     }
 
     public function createPost(PostRequest $request): Post
