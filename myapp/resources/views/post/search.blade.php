@@ -68,7 +68,6 @@
     <aside class="sidebar right-sidebar">
         <div class="sidebar__inner right-sidebar__inner">
             <form class="sidebar__search search flex-direction-row" method="get" action="{{ route('post.search') }}">
-                @csrf
                 <input type="search" class="search__input" name="searchWord" placeholder="ブログ内で検索">
                 <button class="search__button fas fa-search" type="submit"></button>
             </form>
