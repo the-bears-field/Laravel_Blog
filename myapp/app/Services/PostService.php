@@ -56,6 +56,11 @@ class PostService implements PostServiceInterface
         return $this->postRepository->getPostsWithSearchWords($searchWords);
     }
 
+    public function getPostsWithSearchTag(string $searchTag): LengthAwarePaginator
+    {
+        return $this->postRepository->getPostsWithSearchTag($searchTag);
+    }
+
     public function createPost($request): void
     {
         $purifiedRequest = $this->getPurifiedRequest($request);
