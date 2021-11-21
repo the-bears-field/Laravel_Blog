@@ -33,4 +33,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');
-Route::get('/tag/{tagName}', [TagController::class, 'index'])->name('tag.index');
+Route::get('/tag/{tagName}', [PostController::class, 'searchTag'])->name('post.searchTag');

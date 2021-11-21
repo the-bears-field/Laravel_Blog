@@ -48,6 +48,13 @@ class PostController extends Controller
         return view('post.search', compact('posts', 'tags', 'searchWord'));
     }
 
+    public function searchTag(string $tagName): View
+    {
+        $posts = $this->postService->getPostsWithSearchTag($tagName);
+        $tags  = $this->tagService->getAll();
+        return view('post.searchTag', compact('tags', 'posts', 'tagName'));
+    }
+
     public function new(): View
     {
         return view('post.new');

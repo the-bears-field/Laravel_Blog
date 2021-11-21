@@ -4,15 +4,15 @@
 
 @section('content')
     <main class="main main--has-right-sidebar flex-direction-column">
-        @if(!$tag || $tag->posts->isEmpty())
+        @if($posts->isEmpty())
             <article class="search-result-message">
                 #{{ $tagName }} に一致する結果は見つかりませんでした。
             </article>
         @else
             <article class="search-result-message">
-                #{{ $tag->name }} の検索結果
+                #{{ $tagName }} の検索結果
             </article>
-            @foreach($tag->posts as $post)
+            @foreach($posts as $post)
                 <div class="main__posts posts">
                     <article class="posts__content flex-direction-column">
                         @can('viewAny', $post)
@@ -57,12 +57,21 @@
                     </article>
                 </div>
             @endforeach
+            <div class="main__paginator paginator">
+                {{ $posts->links('pagination.default') }}
+            </div>
         @endif
     </main>
 @endsection
 
 @section('sidebar')
     <aside class="sidebar right-sidebar">
+        <div class="sidebar__inner right-sidebar__inner">
+            <form class="sidebar__search search flex-direction-row" method="get" action="{{ route('post.search') }}">
+                <input type="search" class="search__input" name="searchWord" placeholder="ブログ内で検索">
+                <button class="search__button fas fa-search" type="submit"></button>
+            </form>
+        </div>
         <div class="sidebar__inner right-sidebar__inner flex-direction-column">
             <h2 class="sidebar__caption">タグ一覧</h2>
             <div class="sidebar__tags">
