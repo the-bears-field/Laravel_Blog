@@ -23,14 +23,14 @@ class PostTagUserSeeder extends Seeder
             'password' => Hash::make('123456')
         ];
         $user  = User::factory()->create($params);
-        $tags  = Tag::factory()->count(10)->create();
+        $tags  = Tag::factory()->count(20)->create();
         $posts = Post::factory()
-                        ->count(10)
+                        ->count(200)
                         ->create()
                         ->each(function($post) use ($user, $tags) {
                             $post->users()->syncWithoutDetaching($user->id);
                             $post->tags()->syncWithoutDetaching(
-                                $tags->random(random_int(1, 10))->pluck('id')->toArray()
+                                $tags->random(random_int(1, 20))->pluck('id')->toArray()
                             );
                         });
     }
