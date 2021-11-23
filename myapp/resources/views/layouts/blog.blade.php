@@ -40,7 +40,7 @@
     <div class="header__menu">
         @if(Auth::check())
             <a class="header__link" href="/new" ontouchstart="">新規投稿</a>
-            <a class="header__link" href="null" ontouchstart="">アカウント</a>
+            <a class="header__link" href="/user" ontouchstart="">アカウント</a>
             <a class="header__link" href="{{ route('logout') }}"
                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
