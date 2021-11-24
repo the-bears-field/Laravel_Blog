@@ -1,10 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
+use App\Services\UserService;
+use App\Services\UserServiceInterface;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -18,6 +21,13 @@ class UserServiceProvider extends ServiceProvider
         $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class
+        );
+
+        $this->app->bind(UserServiceInterface::class, function ($app): UserService {
+                return new UserService(
+                    $app->make(UserRepositoryInterface::class)
+                );
+            }
         );
     }
 
