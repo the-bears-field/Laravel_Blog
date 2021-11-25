@@ -13,7 +13,7 @@
 
 @section('sidebar')
     <aside class="sidebar left-sidebar settings-list">
-        <a id="username" class="sidebar__inner left-sidebar__inner settings-list__link flex-direction-row">
+        <a id="username" class="sidebar__inner left-sidebar__inner settings-list__link flex-direction-row" href="/user/name">
             <section class="settings-list__item">
                 <h1 class="settings-list__label">ユーザー名</h1>
                 <p class="settings-list__content">{{ Auth::user()->name }}</p>
