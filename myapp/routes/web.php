@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -30,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/delete/{postId}', [PostController::class, 'delete']);
     Route::delete('/delete/{postId}', [PostController::class, 'destroy'])->name('destroy');
     Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user/name', [UserController::class, 'editName']);
+    Route::post('/user/name', [UserController::class, 'updateName']);
 });
 
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');
