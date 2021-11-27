@@ -29,7 +29,7 @@
             <i class="fas fa-chevron-right settings-list__arrow"></i>
         </a>
         {{-- /.sidebar__inner .left-sidebar__inner .settings-list__link --}}
-        <a id="password" class="sidebar__inner left-sidebar__inner settings-list__link flex-direction-row">
+        <a id="password" class="sidebar__inner left-sidebar__inner settings-list__link flex-direction-row" href="/user/password">
             <section class="settings-list__item">
                 <h1 class="settings-list__label">パスワード</h1>
                 <p class="settings-list__content"></p>
