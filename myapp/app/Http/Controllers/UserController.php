@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserNameRequest;
 use App\Http\Requests\UpdateUserEmailRequest;
+use App\Http\Requests\UpdateUserPasswordRequest;
 use App\Services\UserServiceInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -42,6 +43,17 @@ class UserController extends Controller
     }
 
     public function updateEmail(UpdateUserEmailRequest $request)
+    {
+        $this->userService->updateUser($request);
+        return redirect('/user');
+    }
+
+    public function editPassword(Request $request): View
+    {
+        return view('user.password');
+    }
+
+    public function updatePassword(UpdateUserPasswordRequest $request)
     {
         $this->userService->updateUser($request);
         return redirect('/user');

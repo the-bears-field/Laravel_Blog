@@ -35,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/name', [UserController::class, 'updateName']);
     Route::get('/user/email', [UserController::class, 'editEmail']);
     Route::post('/user/email', [UserController::class, 'updateEmail']);
+    Route::get('/user/password', [UserController::class, 'editPassword']);
+    Route::post('/user/password', [UserController::class, 'updatePassword']);
 });
 
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');
