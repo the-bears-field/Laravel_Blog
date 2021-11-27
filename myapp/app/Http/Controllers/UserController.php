@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserNameRequest;
+use App\Http\Requests\UpdateUserEmailRequest;
 use App\Services\UserServiceInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -30,6 +31,17 @@ class UserController extends Controller
     }
 
     public function updateName(UpdateUserNameRequest $request)
+    {
+        $this->userService->updateUser($request);
+        return redirect('/user');
+    }
+
+    public function editEmail(Request $request): View
+    {
+        return view('user.email');
+    }
+
+    public function updateEmail(UpdateUserEmailRequest $request)
     {
         $this->userService->updateUser($request);
         return redirect('/user');

@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/name', [UserController::class, 'editName']);
     Route::post('/user/name', [UserController::class, 'updateName']);
+    Route::get('/user/email', [UserController::class, 'editEmail']);
+    Route::post('/user/email', [UserController::class, 'updateEmail']);
 });
 
 Route::get('/{postId}', [PostController::class, 'show'])->name('post.show');
