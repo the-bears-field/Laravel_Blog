@@ -93,9 +93,8 @@ class PostService implements PostServiceInterface
         $this->tagDeleteAndDetach($post, $removeTagNames);
     }
 
-    public function deletePost(Request $request): void
+    public function deletePost(int $postId): void
     {
-        $postId = intval($request->postId);
         $post   = $this->postRepository->getPost($postId);
 
         if($post->tags->isNotEmpty()){
@@ -105,7 +104,7 @@ class PostService implements PostServiceInterface
 
         $post->users()->detach(Auth::id());
 
-        $this->postRepository->deletePost($request);
+        $this->postRepository->deletePost($postId);
     }
 
     private function tagRegistAndSync(Post $post, array $tagNames)

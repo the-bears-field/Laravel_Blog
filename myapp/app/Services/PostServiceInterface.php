@@ -16,5 +16,5 @@ interface PostServiceInterface
     public function getPostsWithSearchTag(string $searchTag): LengthAwarePaginator;
     public function createPost($request): void;
     public function updatePost(PostRequest $request): void;
-    public function deletePost(Request $request): void;
+    public function deletePost(int $postId): void;
 }

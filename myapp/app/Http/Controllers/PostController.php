@@ -91,12 +91,11 @@ class PostController extends Controller
         return view('post.delete', compact('post'));
     }
 
-    public function destroy(Request $request)
+    public function destroy(int $postId)
     {
-        $postId = intval($request->postId);
         $post = $this->postService->getPost($postId);
         $this->authorize('delete', $post);
-        $this->postService->deletePost($request);
+        $this->postService->deletePost($postId);
         return redirect('/');
     }
 }

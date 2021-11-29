@@ -228,9 +228,7 @@ class PostServiceTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $request = new PostRequest;
-        $params  = ['postId' => '1'];
-        $request->merge($params);
+        $postId = 1;
 
         $this->assertDatabaseHas('posts', [
             'id'    => 1,
@@ -243,7 +241,7 @@ class PostServiceTest extends TestCase
         ]);
 
         $postService = App::make(PostServiceInterface::class);
-        $postService->deletePost($request);
+        $postService->deletePost($postId);
 
         $this->assertDatabaseMissing('posts', [
             'id'    => 1,

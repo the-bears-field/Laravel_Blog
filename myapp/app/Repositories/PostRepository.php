@@ -64,8 +64,8 @@ class PostRepository implements PostRepositoryInterface
         Post::where('id', intval($request->postId))->update($params);
     }
 
-    public function deletePost(Request $request): void
+    public function deletePost(int $postId): void
     {
-        Post::where('id', intval($request->postId))->delete();
+        Post::where('id', $postId)->delete();
     }
 }
