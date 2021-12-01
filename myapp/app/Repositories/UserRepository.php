@@ -13,4 +13,9 @@ class UserRepository implements UserRepositoryInterface
         $params = $request->only('name', 'email', 'password');
         Auth::user()->update($params);
     }
+
+    public function deleteUser(int $userId): void
+    {
+        User::where('id', $userId)->delete();
+    }
 }

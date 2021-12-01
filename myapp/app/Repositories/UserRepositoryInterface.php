@@ -8,4 +8,5 @@ use App\Models\User;
 interface UserRepositoryInterface
 {
     public function updateUser($request): void;
+    public function deleteUser(int $userId): void;
 }
