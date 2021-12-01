@@ -5,8 +5,10 @@ namespace App\Repositories;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 interface PostRepositoryInterface
 {
@@ -14,7 +16,9 @@ interface PostRepositoryInterface
     public function getPost(int $postId);
     public function getPostsWithSearchWords(array $searchWords): LengthAwarePaginator;
     public function getPostsWithSearchTag(string $searchTag): LengthAwarePaginator;
+    public function getPostsRelatedUser(User $user): Collection;
     public function createPost(PostRequest $request): Post;
     public function updatePost(PostRequest $request): void;
     public function deletePost(int $postId): void;
+    public function deletePosts(array $postIds): void;
 }

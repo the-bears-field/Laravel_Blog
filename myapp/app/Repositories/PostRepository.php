@@ -5,9 +5,11 @@ namespace App\Repositories;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -52,6 +54,16 @@ class PostRepository implements PostRepositoryInterface
                 ->paginate(self::PER_PAGE);
     }
 
+    public function getPostsRelatedUser(User $user): Collection
+    {
+        return Post::with('users')
+                ->with('tags')
+                ->whereHas('users', function (Builder $query) use ($user) {
+                    $query->where('email', $user->email);
+                })
+                ->get();
+    }
+
     public function createPost(PostRequest $request): Post
     {
         $params = $request->only(['title', 'post']);
@@ -67,5 +79,10 @@ class PostRepository implements PostRepositoryInterface
     public function deletePost(int $postId): void
     {
         Post::where('id', $postId)->delete();
+    }
+
+    public function deletePosts(array $postIds): void
+    {
+        Post::whereIn('id', $postIds)->delete();
     }
 }
