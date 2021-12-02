@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteUserRequest;
 use App\Http\Requests\UpdateUserNameRequest;
 use App\Http\Requests\UpdateUserEmailRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
@@ -57,5 +58,16 @@ class UserController extends Controller
     {
         $this->userService->updateUser($request);
         return redirect('/user');
+    }
+
+    public function delete()
+    {
+        return view('user.delete');
+    }
+
+    public function destroy(DeleteUserRequest $request)
+    {
+        $this->userService->deleteUser();
+        return redirect('/');
     }
 }
