@@ -92,4 +92,37 @@ class UserServiceTest extends TestCase
             'password' => 'aaa'
         ]);
     }
+
+    public function test_deleteUserメソッドが正常に作動するか()
+    {
+        $this->actingAs($this->user);
+        $userService = App::make(UserServiceInterface::class);
+
+        $this->assertDatabaseHas('posts', [
+            'id' => 1,
+            'title' => 'test',
+            'post' => 'test'
+        ]);
+
+        $this->assertDatabaseHas('users', [
+            'name'     => 'test',
+            'email'    => 'test@example.com',
+            'password' => 'test'
+        ]);
+
+        $userService->deleteUser();
+
+        $this->assertDatabaseMissing('posts', [
+            'id' => 1,
+            'title' => 'test',
+            'post' => 'test'
+        ]);
+
+        $this->assertDatabaseMissing('users', [
+            'name'     => 'test',
+            'email'    => 'test@example.com',
+            'password' => 'test'
+        ]);
+    }
+
 }

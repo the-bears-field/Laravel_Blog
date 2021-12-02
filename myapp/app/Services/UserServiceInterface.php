@@ -6,4 +6,5 @@ namespace App\Services;
 interface UserServiceInterface
 {
     public function updateUser($request): void;
+    public function deleteUser(): void;
 }
