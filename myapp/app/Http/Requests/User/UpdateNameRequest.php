@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteUserRequest extends FormRequest
+class UpdateNameRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +25,11 @@ class DeleteUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => ['required', 'current_password']
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'password.required'         => 'パスワードが入力されていません。',
-            'password.current_password' => 'パスワードが違います。'
+            'name' => [
+                'required',
+                'string',
+                'max:50'
+            ],
         ];
     }
 }

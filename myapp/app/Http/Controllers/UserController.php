@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DeleteUserRequest;
-use App\Http\Requests\UpdateUserNameRequest;
-use App\Http\Requests\UpdateUserEmailRequest;
-use App\Http\Requests\UpdateUserPasswordRequest;
+use App\Http\Requests\User\DeleteRequest;
+use App\Http\Requests\User\UpdateNameRequest;
+use App\Http\Requests\User\UpdateEmailRequest;
+use App\Http\Requests\User\UpdatePasswordRequest;
 use App\Services\UserServiceInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -32,7 +32,7 @@ class UserController extends Controller
         return view('user.name');
     }
 
-    public function updateName(UpdateUserNameRequest $request)
+    public function updateName(UpdateNameRequest $request)
     {
         $this->userService->updateUser($request);
         return redirect('/user');
@@ -43,7 +43,7 @@ class UserController extends Controller
         return view('user.email');
     }
 
-    public function updateEmail(UpdateUserEmailRequest $request)
+    public function updateEmail(UpdateEmailRequest $request)
     {
         $this->userService->updateUser($request);
         return redirect('/user');
@@ -54,7 +54,7 @@ class UserController extends Controller
         return view('user.password');
     }
 
-    public function updatePassword(UpdateUserPasswordRequest $request)
+    public function updatePassword(UpdatePasswordRequest $request)
     {
         $this->userService->updateUser($request);
         return redirect('/user');
@@ -65,7 +65,7 @@ class UserController extends Controller
         return view('user.delete');
     }
 
-    public function destroy(DeleteUserRequest $request)
+    public function destroy(DeleteRequest $request)
     {
         $this->userService->deleteUser();
         return redirect('/');

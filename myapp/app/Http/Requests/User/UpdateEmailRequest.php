@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserNameRequest extends FormRequest
+class UpdateEmailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +25,13 @@ class UpdateUserNameRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:50'
-            ],
+            'email' => ['required', 'email', 'max:254'],
+            'password' => ['required', 'current_password'],
         ];
+    }
+
+    protected function passedValidation()
+    {
+        $this->offsetUnset('password');
     }
 }

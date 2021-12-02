@@ -1,12 +1,11 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-class UpdateUserEmailRequest extends FormRequest
+class DeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,13 +25,15 @@ class UpdateUserEmailRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'email', 'max:254'],
-            'password' => ['required', 'current_password'],
+            'password' => ['required', 'current_password']
         ];
     }
 
-    protected function passedValidation()
+    public function messages()
     {
-        $this->offsetUnset('password');
+        return [
+            'password.required'         => 'パスワードが入力されていません。',
+            'password.current_password' => 'パスワードが違います。'
+        ];
     }
 }
