@@ -59,7 +59,7 @@
             <i class="fas fa-chevron-right settings-list__arrow"></i>
         </a>
         {{-- /.sidebar__inner .left-sidebar__inner .settings-list__link --}}
-        <a id="deactivate" class="sidebar__inner left-sidebar__inner settings-list__link flex-direction-row">
+        <a id="deactivate" class="sidebar__inner left-sidebar__inner settings-list__link flex-direction-row" href="/user/delete">
             <section class="settings-list__item">
                 <h1 class="settings-list__label">アカウントを削除</h1>
                 <p class="settings-list__content"></p>
