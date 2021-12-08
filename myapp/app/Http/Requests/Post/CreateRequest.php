@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -36,5 +36,10 @@ class PostRequest extends FormRequest
             'title.required' => '入力必須です。',
             'post.required'  => '入力必須です。',
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->merge(['post' => clean($this->post)]);
     }
 }

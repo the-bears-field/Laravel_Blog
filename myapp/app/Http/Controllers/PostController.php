@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PostRequest;
+use App\Http\Requests\Post\CreateRequest;
+use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Post;
 use App\Services\PostServiceInterface;
 use App\Services\TagServiceInterface;
@@ -60,7 +61,7 @@ class PostController extends Controller
         return view('post.new');
     }
 
-    public function create(PostRequest $request)
+    public function create(CreateRequest $request)
     {
         $this->authorize('create', Post::class);
         $this->postService->createPost($request);
@@ -74,7 +75,7 @@ class PostController extends Controller
         return view('post.edit', compact('post'));
     }
 
-    public function update(PostRequest $request)
+    public function update(UpdateRequest $request)
     {
         $postId = intval($request->postId);
         $post = $this->postService->getPost($postId);

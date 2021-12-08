@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Http\Requests\PostRequest;
+use App\Http\Requests\Post\CreateRequest;
+use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,13 +65,13 @@ class PostRepository implements PostRepositoryInterface
                 ->get();
     }
 
-    public function createPost(PostRequest $request): Post
+    public function createPost(CreateRequest $request): Post
     {
         $params = $request->only(['title', 'post']);
         return Post::create($params);
     }
 
-    public function updatePost(PostRequest $request): void
+    public function updatePost(UpdateRequest $request): void
     {
         $params = $request->only(['title', 'post']);
         Post::where('id', intval($request->postId))->update($params);

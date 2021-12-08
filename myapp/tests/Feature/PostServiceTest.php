@@ -2,13 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Http\Requests\PostRequest;
+use App\Http\Requests\Post\CreateRequest;
+use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\PostServiceInterface;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
@@ -71,16 +73,18 @@ class PostServiceTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $request = new PostRequest;
         $params  = [
             'title' => 'example',
             'post'  => '<p>example</p>',
             'tags'  => 'example1 example2 example3',
         ];
-        $request->merge($params);
+
+        $request = Request::create('http://localhost:8080', 'POST', $params);
+        app()->instance('request', $request);
+        $formRequest = app(CreateRequest::class);
 
         $postService = App::make(PostServiceInterface::class);
-        $postService->createPost($request);
+        $postService->createPost($formRequest);
 
         $this->assertDatabaseHas('posts', [
             'title' => 'example',
@@ -100,16 +104,18 @@ class PostServiceTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $request = new PostRequest;
         $params  = [
             'title' => 'XSS test',
             'post'  => '<p>a</p><script>alert("!!!");</script>',
             'tags'  => 'example1 example2 example3',
         ];
-        $request->merge($params);
+
+        $request = Request::create('http://localhost:8080', 'POST', $params);
+        app()->instance('request', $request);
+        $formRequest = app(CreateRequest::class);
 
         $postService = App::make(PostServiceInterface::class);
-        $postService->createPost($request);
+        $postService->createPost($formRequest);
         $post = $postService->getPost(2);
 
         $this->assertDatabaseMissing('posts', [
@@ -128,17 +134,19 @@ class PostServiceTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $request = new PostRequest;
         $params  = [
             'postId' => '1',
             'title'  => 'example',
             'post'   => '<p>example</p>',
             'tags'   => 'test',
         ];
-        $request->merge($params);
+
+        $request = Request::create('http://localhost:8080', 'POST', $params);
+        app()->instance('request', $request);
+        $formRequest = app(UpdateRequest::class);
 
         $postService = App::make(PostServiceInterface::class);
-        $postService->updatePost($request);
+        $postService->updatePost($formRequest);
 
         $this->assertDatabaseHas('posts', [
             'id'    => 1,
@@ -162,8 +170,13 @@ class PostServiceTest extends TestCase
             'post'   => '<p>test</p>',
             'tags'   => 'test2',
         ];
-        $request->merge($params);
-        $postService->updatePost($request);
+
+        $request = Request::create('http://localhost:8080', 'POST', $params);
+        app()->instance('request', $request);
+        $formRequest = app(UpdateRequest::class);
+
+        $postService = App::make(PostServiceInterface::class);
+        $postService->updatePost($formRequest);
 
         $this->assertDatabaseHas('posts', [
             'id'    => 1,
@@ -196,17 +209,19 @@ class PostServiceTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $request = new PostRequest;
         $params  = [
             'postId' => '1',
             'title'  => 'XSS Attack',
             'post'   => '<p>a</p><script>alert("!!!");</script>',
             'tags'   => 'XSS',
         ];
-        $request->merge($params);
+
+        $request = Request::create('http://localhost:8080', 'POST', $params);
+        app()->instance('request', $request);
+        $formRequest = app(UpdateRequest::class);
 
         $postService = App::make(PostServiceInterface::class);
-        $postService->updatePost($request);
+        $postService->updatePost($formRequest);
 
         $post = $postService->getPost(1);
 
@@ -262,16 +277,18 @@ class PostServiceTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $request = new PostRequest;
         $params  = [
             'title' => 'Steve Jobs wise saying.',
             'post'  => 'Stay Hungry. Stay Foolish.',
             'tags'  => 'Steve_Jobs Wise_saying Stanford_University Speech Apple',
         ];
-        $request->merge($params);
+
+        $request = Request::create('http://localhost:8080', 'POST', $params);
+        app()->instance('request', $request);
+        $formRequest = app(CreateRequest::class);
 
         $postService = App::make(PostServiceInterface::class);
-        $postService->createPost($request);
+        $postService->createPost($formRequest);
 
         $searchWords = 'Hungry Foolish';
         $posts = $postService->getPostsWithSearchWords($searchWords);

@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Http\Requests\PostRequest;
+use App\Http\Requests\Post\CreateRequest;
+use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Post;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
@@ -61,31 +62,29 @@ class PostService implements PostServiceInterface
         return $this->postRepository->getPostsWithSearchTag($searchTag);
     }
 
-    public function createPost($request): void
+    public function createPost(CreateRequest $request): void
     {
-        $purifiedRequest = $this->getPurifiedRequest($request);
-        $post = $this->postRepository->createPost($purifiedRequest);
+        $post = $this->postRepository->createPost($request);
         $user = Auth::user();
         $user->posts()->syncWithoutDetaching(intval($post->id));
 
         if($request->tags){
-            $sentTagNames = $this->stringToArray($purifiedRequest->tags);
+            $sentTagNames = $this->stringToArray($request->tags);
             $this->tagRegistAndSync($post, $sentTagNames);
         }
     }
 
-    public function updatePost(PostRequest $request): void
+    public function updatePost(UpdateRequest $request): void
     {
-        $purifiedRequest = $this->getPurifiedRequest($request);
-        $this->postRepository->updatePost($purifiedRequest);
+        $this->postRepository->updatePost($request);
 
-        if(!$purifiedRequest->tags){
+        if(!$request->tags){
             return;
         }
 
-        $postId          = intval($purifiedRequest->postId);
+        $postId          = intval($request->postId);
         $post            = $this->postRepository->getPost($postId);
-        $sentTagNames    = $this->stringToArray($purifiedRequest->tags);
+        $sentTagNames    = $this->stringToArray($request->tags);
         $currentTagNames = $post->tags->pluck('name')->toArray();
         $addTagNames     = array_diff($sentTagNames, $currentTagNames);
         $removeTagNames  = array_diff($currentTagNames, $sentTagNames);
@@ -95,7 +94,7 @@ class PostService implements PostServiceInterface
 
     public function deletePost(int $postId): void
     {
-        $post   = $this->postRepository->getPost($postId);
+        $post = $this->postRepository->getPost($postId);
 
         if($post->tags->isNotEmpty()){
             $removeTagNames = $post->tags->pluck('name')->toArray();
@@ -150,11 +149,6 @@ class PostService implements PostServiceInterface
                 $this->tagRepository->deleteTag($tag->name);
             }
         }
-    }
-
-    private function getPurifiedRequest($request)
-    {
-        return $request->merge(['post' => clean($request->post)]);
     }
 
     /**
