@@ -1,6 +1,6 @@
 @extends('layouts.blog')
 
-@section('title', 'Index')
+@section('title', 'メールアドレスの変更 / Kumano.code')
 
 @section('content')
     <main class="main main--has-left-sidebar align-left">
@@ -9,7 +9,7 @@
         <div class="main__settings settings">
             <div class="settings__label flex-direction-row">
                 <a class="settings__back" href="/user"><i class="fas fa-arrow-left"></i></a>
-                <h1 class="settings__title">ユーザー名を変更</h1>
+                <h1 class="settings__title">メールアドレスを変更</h1>
             </div>
             <form class="flex-direction-column" method="post" action="/user/email">
                 @csrf
