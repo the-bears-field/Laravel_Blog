@@ -1,6 +1,6 @@
 @extends('layouts.blog')
 
-@section('title', 'New')
+@section('title', '記事の新規作成 / Kumano.code')
 
 @section('content')
     <main class="main main--has-right-sidebar flex-direction-column">

@@ -1,5 +1,7 @@
 @extends('layouts.blog')
 
+@section('title', 'ユーザー新規登録 / Kumano.code')
+
 @section('content')
 <main class="main main--no-sidebar">
     <div class="unlogged-user-form-div">

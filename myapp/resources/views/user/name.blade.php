@@ -1,6 +1,6 @@
 @extends('layouts.blog')
 
-@section('title', 'Index')
+@section('title', 'ユーザー名を変更 / Kumano.code')
 
 @section('content')
     <main class="main main--has-left-sidebar align-left">
