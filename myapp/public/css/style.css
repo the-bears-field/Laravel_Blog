@@ -3,10 +3,15 @@
 @media screen and (min-width: 769px){
     /************************************************** common **************************************************/
     body {
+        height: 100vh;
+    }
+
+    .site-wrapper {
         display: grid;
         font-family: sans-serif;
-        grid-template-rows: 60px auto;
+        grid-template-rows: 60px 1fr auto;
         grid-template-columns: repeat(1000, 1fr);
+        min-height: 100%;
     }
 
     a {
@@ -237,7 +242,6 @@
     /************************************************** main **************************************************/
     .main {
         grid-row: 2/3;
-        min-height: 800px;
     }
 
     .main--has-right-sidebar {

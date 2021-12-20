@@ -28,38 +28,40 @@
     </div>
 </div>
 
-<header class="header flex-direction-row">
-    <a class="header__logo" href="/">Kumano.code</a>
-    <div class="header__nav">
-        <div class="header__nav-icon">
-            <span class="header__nav-line"></span>
-            <span class="header__nav-line"></span>
-            <span class="header__nav-line"></span>
+<div class="site-wrapper">
+    <header class="header flex-direction-row">
+        <a class="header__logo" href="/">Kumano.code</a>
+        <div class="header__nav">
+            <div class="header__nav-icon">
+                <span class="header__nav-line"></span>
+                <span class="header__nav-line"></span>
+                <span class="header__nav-line"></span>
+            </div>
         </div>
-    </div>
-    <div class="header__menu">
-        @if(Auth::check())
-            <a class="header__link" href="/new" ontouchstart="">新規投稿</a>
-            <a class="header__link" href="/user" ontouchstart="">アカウント</a>
-            <a class="header__link" href="{{ route('logout') }}"
-                onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();">
-                {{ __('ログアウト') }}
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                @csrf
-            </form>
-        @else
-            <a class="header__link" href="/login" ontouchstart="">ログイン</a>
-            <a class="header__link" href="register" ontouchstart="">新規登録</a>
-        @endif
-    </div>
-</header>
-<div class="message"></div>
-@yield('content')
-@yield('sidebar')
-<footer class="footer">
-    <p class="footer__copyright">copyright 2019 Satoshi Kumano</p>
-</footer>
+        <div class="header__menu">
+            @if(Auth::check())
+                <a class="header__link" href="/new" ontouchstart="">新規投稿</a>
+                <a class="header__link" href="/user" ontouchstart="">アカウント</a>
+                <a class="header__link" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                    {{ __('ログアウト') }}
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                </form>
+            @else
+                <a class="header__link" href="/login" ontouchstart="">ログイン</a>
+                <a class="header__link" href="register" ontouchstart="">新規登録</a>
+            @endif
+        </div>
+    </header>
+    <div class="message"></div>
+    @yield('content')
+    @yield('sidebar')
+    <footer class="footer">
+        <p class="footer__copyright">copyright 2019 Satoshi Kumano</p>
+    </footer>
+</div>
 </body>
 </html>
