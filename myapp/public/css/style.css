@@ -423,14 +423,15 @@
 
     /************************************************** footer **************************************************/
     .footer {
-        /* background-color: darkgray; */
+        background-color: #180614;
         grid-column: 1/1000;
         grid-row: 3/4;
     }
 
     .footer__copyright {
+        color: ghostwhite;
         display: inline-block;
-        width: 90vw;
+        width: 100vw;
         height: auto;
         margin: 20px auto;
         text-align: center;
@@ -571,7 +572,7 @@
     }
 
     .main__paginator {
-        margin-top: 100px;
+        margin: 50px auto;
     }
 
     .paginator__nav {
